@@ -65,10 +65,8 @@ class UserController extends Controller
 
         $credentials = $request->only('username', 'password');
         $token = JWTAuth::attempt(['username' => $credentials['username'], 'password' => $credentials['password']]);
-        // Mendapatkan refresh token
-        $refreshToken = JWTAuth::getToken()->getRefresh();
 
-        return new UserResource($user, $token, $refreshToken);
+        return new UserResource($user, $token);
     }
 
     public function logout(): JsonResponse

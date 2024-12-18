@@ -7,13 +7,12 @@ use Illuminate\Http\Resources\Json\JsonResource;
 
 class UserResource extends JsonResource
 {
-    private $token, $refreshToken;
+    private $token;
 
-    public function __construct($resource, $token = null, $refreshToken = null)
+    public function __construct($resource, $token = null)
     {
         parent::__construct($resource);
         $this->token = $token;
-        $this->refreshToken = $refreshToken;
     }
 
     /**
@@ -23,21 +22,20 @@ class UserResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
-        if (isset($this->token) && isset($this->refreshToken)) {
+        if (isset($this->token)) {
             return [
                 'id' => $this->id,
                 'name' => $this->name,
                 'username' => $this->username,
-                'email' => $this->username,
-                'token' => $this->token,
-                'refresh_token' => $this->refreshToken
+                'email' => $this->email,
+                'token' => $this->token
             ];
         } else {
             return [
                 'id' => $this->id,
                 'name' => $this->name,
                 'username' => $this->username,
-                'email' => $this->username,
+                'email' => $this->email,
             ];
         }
     }
