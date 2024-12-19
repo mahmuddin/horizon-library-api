@@ -81,6 +81,12 @@ class UserController extends Controller
         return new UserResource($user, $token, $refreshToken);
     }
 
+    /**
+     * Refreshes the JWT token for the given user.
+     *
+     * @param Request $request
+     * @return JsonResponse
+     */
     public function refresh(Request $request): JsonResponse
     {
         try {
@@ -102,6 +108,11 @@ class UserController extends Controller
         }
     }
 
+    /**
+     * Logs out the authenticated user by invalidating their JWT token.
+     *
+     * @return JsonResponse
+     */
     public function logout(): JsonResponse
     {
         //remove token
@@ -118,12 +129,26 @@ class UserController extends Controller
         }
     }
 
+    /**
+     * Returns the authenticated user.
+     *
+     * @param Request $request
+     * @return UserResource
+     */
     public function get(Request $request): UserResource
     {
         $user = Auth::user();
+        $user->load('contacts.addresses');
+
         return new UserResource($user);
     }
 
+    /**
+     * Updates the authenticated user's information.
+     *
+     * @param UserUpdateRequest $request
+     * @return UserResource
+     */
     public function update(UserUpdateRequest $request): UserResource
     {
         $data = $request->validated();
