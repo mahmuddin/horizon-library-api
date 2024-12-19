@@ -7,12 +7,13 @@ use Illuminate\Http\Resources\Json\JsonResource;
 
 class UserResource extends JsonResource
 {
-    private $token;
+    private $token, $refreshToken;
 
-    public function __construct($resource, $token = null)
+    public function __construct($resource, $token = null, $refreshToken = null)
     {
         parent::__construct($resource);
         $this->token = $token;
+        $this->refreshToken = $refreshToken;
     }
 
     /**
@@ -28,7 +29,8 @@ class UserResource extends JsonResource
                 'name' => $this->name,
                 'username' => $this->username,
                 'email' => $this->email,
-                'token' => $this->token
+                'access_token' => $this->token,
+                'refresh_token' => $this->refreshToken,
             ];
         } else {
             return [

@@ -13,6 +13,8 @@ use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Tymon\JWTAuth\Exceptions\JWTException;
+use Tymon\JWTAuth\Exceptions\TokenExpiredException;
 use Tymon\JWTAuth\Facades\JWTAuth;
 
 class UserController extends Controller
@@ -65,8 +67,39 @@ class UserController extends Controller
 
         $credentials = $request->only('username', 'password');
         $token = JWTAuth::attempt(['username' => $credentials['username'], 'password' => $credentials['password']]);
+        if (!$token) {
+            throw new HttpResponseException(response([
+                'errors' => [
+                    'message' => ['Could not create token.']
+                ]
+            ], 500));
+        }
 
-        return new UserResource($user, $token);
+        // Generate refresh token (optional if you implement refresh logic)
+        $refreshToken = JWTAuth::customClaims(['type' => 'refresh'])->fromUser($user);
+
+        return new UserResource($user, $token, $refreshToken);
+    }
+
+    public function refresh(Request $request): JsonResponse
+    {
+        try {
+            $newToken = JWTAuth::parseToken()->refresh();
+
+            return response()->json([
+                'access_token' => $newToken,
+                'token_type' => 'bearer',
+                'expires_in' => auth()->factory()->getTTL() * 60
+            ], 200);
+        } catch (TokenExpiredException $e) {
+            return response()->json([
+                'message' => 'Token has expired and cannot be refreshed',
+            ], 401);
+        } catch (JWTException $e) {
+            return response()->json([
+                'message' => 'Failed to refresh token. Please login again.',
+            ], 401);
+        }
     }
 
     public function logout(): JsonResponse
