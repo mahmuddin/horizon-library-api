@@ -57,6 +57,21 @@ class ContactController extends Controller
         return (new ContactResource($contact))->response()->setStatusCode(201);
     }
 
+    /**
+     * Retrieves a list of contacts for the authenticated user and returns a JSON response with the contact's information.
+     *
+     * @return JsonResponse A JSON response containing the list of contacts in JSON format.
+     */
+    public function list(): JsonResponse
+    {
+        $user = Auth::user();
+
+        $contact = Contact::where('user_id', $user->id)->get();
+
+        return response()->json([
+            'data' => ContactResource::collection($contact)
+        ])->setStatusCode(200);
+    }
 
     /**
      * Searches for contacts of the authenticated user based on query parameters

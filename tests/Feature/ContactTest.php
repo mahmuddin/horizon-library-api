@@ -217,6 +217,39 @@ class ContactTest extends TestCase
     }
 
     /**
+     * Tests that the contact list endpoint returns a successful response with the correct contact details.
+     *
+     * This test seeds the database with users and contacts, logs in a user,
+     * retrieves the list of contacts, and checks that the response status is 200.
+     * It verifies that the response JSON contains the expected contact details.
+     */
+    public function testListSuccess()
+    {
+        // Running the UserSeeder and ContactSeeder
+        $this->seed([
+            UserSeeder::class,
+            ContactSeeder::class
+        ]);
+        // Get Token
+        $token = JWTAuth::attempt(['username' => 'test', 'password' => 'test']);
+        // Get Contact
+        $response = $this->get('/api/contacts', [
+            'Authorization' => 'Bearer ' . $token
+        ]);
+        $response->assertStatus(200)
+            ->assertJson([
+                "data" => [
+                    [
+                        'first_name' => 'Test',
+                        'last_name' => 'User',
+                        'phone' => '08987654321',
+                        'email' => 'test_user@mail.com',
+                    ]
+                ]
+            ]);
+    }
+
+    /**
      * Tests that updating a contact successfully returns the updated contact
      * with the correct fields in the response JSON.
      *
@@ -379,7 +412,7 @@ class ContactTest extends TestCase
         // Get Token
         $token = JWTAuth::attempt(['username' => 'test', 'password' => 'test']);
         // Get Contact
-        $response = $this->get('/api/contacts?name=first', [
+        $response = $this->get('/api/contacts/search?name=first', [
             'Authorization' => 'Bearer ' . $token
         ]);
         $response->assertStatus(200);
@@ -413,7 +446,7 @@ class ContactTest extends TestCase
         // Get Token
         $token = JWTAuth::attempt(['username' => 'test', 'password' => 'test']);
         // Get Contact
-        $response = $this->get('/api/contacts?email=test', [
+        $response = $this->get('/api/contacts/search?email=test', [
             'Authorization' => 'Bearer ' . $token
         ]);
         $response->assertStatus(200);
@@ -447,7 +480,7 @@ class ContactTest extends TestCase
         // Get Token
         $token = JWTAuth::attempt(['username' => 'test', 'password' => 'test']);
         // Get Contact
-        $response = $this->get('/api/contacts?phone=089876543', [
+        $response = $this->get('/api/contacts/search?phone=089876543', [
             'Authorization' => 'Bearer ' . $token
         ]);
         $response->assertStatus(200);
@@ -462,6 +495,14 @@ class ContactTest extends TestCase
         self::assertEquals(20, $responseData['meta']['total']);
     }
 
+    /**
+     * Tests that searching for a contact that does not exist returns a 200 response
+     * with an empty list of contacts.
+     *
+     * This test seeds the database with users and contacts, logs in a user,
+     * searches for a contact that does not exist, and checks that the response
+     * is 200 with an empty list of contacts.
+     */
     public function testSearchNotFound()
     {
         // Running the UserSeeder and SearchSeeder
@@ -473,7 +514,7 @@ class ContactTest extends TestCase
         // Get Token
         $token = JWTAuth::attempt(['username' => 'test', 'password' => 'test']);
         // Get Contact
-        $response = $this->get('/api/contacts?name=0tidak ada', [
+        $response = $this->get('/api/contacts/search?name=0tidak ada', [
             'Authorization' => 'Bearer ' . $token
         ]);
         $response->assertStatus(200);
@@ -499,7 +540,7 @@ class ContactTest extends TestCase
         // Get Token
         $token = JWTAuth::attempt(['username' => 'test', 'password' => 'test']);
         // Get Contact
-        $response = $this->get('/api/contacts?size=5&page=2', [
+        $response = $this->get('/api/contacts/search?size=5&page=2', [
             'Authorization' => 'Bearer ' . $token
         ]);
         $response->assertStatus(200);

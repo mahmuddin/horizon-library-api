@@ -154,7 +154,7 @@ class UserController extends Controller
     public function get(Request $request): UserResource
     {
         $user = Auth::user();
-        $user->load('contacts.addresses');
+        $user->with('contacts.addresses');
 
         return new UserResource($user);
     }

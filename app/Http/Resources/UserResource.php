@@ -9,6 +9,14 @@ class UserResource extends JsonResource
 {
     private $token, $refreshToken;
 
+    /**
+     * Create a new UserResource instance.
+     *
+     * @param mixed $resource The resource being transformed.
+     * @param string|null $token The access token, if available.
+     * @param string|null $refreshToken The refresh token, if available.
+     */
+
     public function __construct($resource, $token = null, $refreshToken = null)
     {
         parent::__construct($resource);
