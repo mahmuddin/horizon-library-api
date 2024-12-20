@@ -23,5 +23,12 @@ class ContactSeeder extends Seeder
             'phone' => '08987654321',
             'user_id' => $user->id
         ]);
+        Contact::create([
+            'first_name' => 'Test',
+            'last_name' => 'User',
+            'email' => 'test_user@mail.com',
+            'phone' => '08987654322',
+            'user_id' => $user->id + 1
+        ]);
     }
 }

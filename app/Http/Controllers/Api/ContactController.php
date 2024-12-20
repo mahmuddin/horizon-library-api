@@ -32,7 +32,9 @@ class ContactController extends Controller
         if (!$contact) {
             throw new HttpResponseException(response()->json([
                 'errors' => [
-                    'contact' => ['Contact not found.']
+                    'message' => [
+                        'not found.'
+                    ]
                 ]
             ], 404));
         }
@@ -100,7 +102,7 @@ class ContactController extends Controller
     public function get(int $id): ContactResource
     {
         $user = Auth::user();
-        $contact = $this->getContacts($id, $user);
+        $contact = $this->getContacts($id, user: $user);
         return new ContactResource($contact);
     }
 

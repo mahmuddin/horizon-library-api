@@ -60,13 +60,16 @@ class UserController extends Controller
         if (!$user || !Hash::check($data['password'], $user->password)) {
             throw new HttpResponseException(response([
                 'errors' => [
-                    'message' => ['Username or password wrong.']
+                    'message' => ['Username or password is incorrect.']
                 ]
             ], 401));
         }
 
-        $credentials = $request->only('username', 'password');
-        $token = JWTAuth::attempt(['username' => $credentials['username'], 'password' => $credentials['password']]);
+        $token = JWTAuth::claims(['type' => 'access'])->attempt([
+            'username' => $data['username'],
+            'password' => $data['password']
+        ]);
+
         if (!$token) {
             throw new HttpResponseException(response([
                 'errors' => [
@@ -75,22 +78,35 @@ class UserController extends Controller
             ], 500));
         }
 
-        // Generate refresh token (optional if you implement refresh logic)
-        $refreshToken = JWTAuth::customClaims(['type' => 'refresh'])->fromUser($user);
+        // Generate refresh token
+        $refreshToken = JWTAuth::claims(['type' => 'refresh'])->fromUser($user);
 
         return new UserResource($user, $token, $refreshToken);
     }
 
     /**
-     * Refreshes the JWT token for the given user.
+     * Refreshes the user's JWT token if valid and returns a new access token.
      *
-     * @param Request $request
-     * @return JsonResponse
+     * @param Request $request The incoming request.
+     * @return JsonResponse A JSON response containing the new access token, its type, and expiration time.
+     *
+     * @throws HttpResponseException if the token is not provided, expired, or if there is a failure in refreshing the token.
      */
     public function refresh(Request $request): JsonResponse
     {
         try {
-            $newToken = JWTAuth::parseToken()->refresh();
+            $token = JWTAuth::getToken();
+
+            if (!$token) {
+                return response()->json([
+                    'errors' => [
+                        'message' => 'Token not provided'
+                    ]
+                ], 400);
+            }
+
+            // Validate and refresh token
+            $newToken = JWTAuth::refresh($token);
 
             return response()->json([
                 'access_token' => $newToken,
