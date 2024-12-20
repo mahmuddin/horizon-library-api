@@ -32,6 +32,10 @@
         {
             "name": "Address",
             "description": "Endpoints related to address management"
+        },
+        {
+            "name": "User Category",
+            "description": "Endpoints related to user category management"
         }
     ],
     "paths": {
@@ -1106,6 +1110,122 @@
                                         },
                                         "errors": {
                                             "type": "object"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/user_categories": {
+            "post": {
+                "tags": [
+                    "User Category"
+                ],
+                "summary": "Create a new user category",
+                "description": "Create a new user category",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "examples": {
+                                "admin": {
+                                    "description": "Register user admin",
+                                    "value": {
+                                        "category": "Admin",
+                                        "description": "Mengelola sistem secara penuh",
+                                        "privilege": "Semua fitur"
+                                    }
+                                }
+                            },
+                            "schema": {
+                                "type": "object",
+                                "required": [
+                                    "category",
+                                    "description",
+                                    "privilege"
+                                ],
+                                "properties": {
+                                    "category": {
+                                        "type": "string"
+                                    },
+                                    "description": {
+                                        "type": "string"
+                                    },
+                                    "privilege": {
+                                        "type": "string"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Success create user category",
+                        "content": {
+                            "application/json": {
+                                "examples": {
+                                    "success": {
+                                        "description": "Success create user category",
+                                        "value": {
+                                            "data": {
+                                                "id": 1,
+                                                "category": "Admin",
+                                                "description": "Mengelola sistem secara penuh",
+                                                "privilege": "Semua fitur"
+                                            }
+                                        }
+                                    }
+                                },
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "type": "object",
+                                            "properties": {
+                                                "id": {
+                                                    "type": "number"
+                                                },
+                                                "category": {
+                                                    "type": "string"
+                                                },
+                                                "description": {
+                                                    "type": "string"
+                                                },
+                                                "privilege": {
+                                                    "type": "string"
+                                                }
+                                            }
+                                        },
+                                        "errors": {
+                                            "type": "object"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Validation error",
+                        "content": {
+                            "application/json": {
+                                "examples": {
+                                    "validationerror": {
+                                        "description": "Validation error",
+                                        "value": {
+                                            "errors": {
+                                                "category": [
+                                                    "The category field is required."
+                                                ],
+                                                "description": [
+                                                    "The description field is required."
+                                                ],
+                                                "privilege": [
+                                                    "The privilege field is required."
+                                                ]
+                                            }
                                         }
                                     }
                                 }
