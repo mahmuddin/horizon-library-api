@@ -4,6 +4,6 @@ This is a Horizon Library API project.
 
 ## Technology Stack
 
--   PHP
--   Laravel 11
--   PostgreSQL
+-   PHP version 8.4.1
+-   Laravel version 11.x
+-   PostgreSQL version 17
