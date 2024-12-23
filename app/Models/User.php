@@ -5,6 +5,7 @@ namespace App\Models;
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Tymon\JWTAuth\Contracts\JWTSubject;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -25,6 +26,7 @@ class User extends Authenticatable implements JWTSubject
         'email',
         'password',
         'username',
+        'user_category_id',
     ];
 
     /**
@@ -79,5 +81,10 @@ class User extends Authenticatable implements JWTSubject
     public function contacts(): HasMany
     {
         return $this->hasMany(Contact::class, 'user_id', 'id');
+    }
+
+    public function userCategory(): BelongsTo
+    {
+        return $this->belongsTo(UserCategory::class, 'user_category_id', 'id');
     }
 }

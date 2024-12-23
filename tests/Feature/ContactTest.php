@@ -293,15 +293,14 @@ class ContactTest extends TestCase
     }
 
     /**
-     * Tests that updating a contact fails due to authentication errors.
+     * Tests that attempting to update a contact without being authenticated
+     * returns a 401 unauthenticated response.
      *
      * This test seeds the database with users and contacts, attempts to update
-     * a contact without providing an authorization token, and checks that the
-     * response status is 401 with the appropriate error message indicating
-     * the user is unauthenticated.
+     * a contact without providing a JWT token, and checks that the response
+     * is 401 with the appropriate authentication error message.
      */
-
-    public function testUpdateValidationError()
+    public function testUpdateUnauthenticated()
     {
         // Running the UserSeeder and ContactSeeder
         $this->seed([
@@ -328,6 +327,40 @@ class ContactTest extends TestCase
                 "errors" => [
                     'message' => [
                         'Unauthenticated.'
+                    ]
+                ]
+            ]);
+    }
+
+    public function testUpdateValidationError()
+    {
+        // Running the UserSeeder and ContactSeeder
+        $this->seed([
+            UserSeeder::class,
+            ContactSeeder::class
+        ]);
+        $contact = Contact::query()->limit(1)->first();
+        // Get Token
+        $token = JWTAuth::attempt(['username' => 'test', 'password' => 'test']);
+        // Update Contact
+        $response = $this->put(
+            '/api/contacts/' . $contact->id,
+            [
+                'first_name' => '',
+                'last_name' => 'User',
+                'phone' => '08987654321',
+                'email' => 'test_user@mail.com',
+            ],
+            [
+                'Authorization' => 'Bearer ' . $token
+            ]
+        );
+
+        $response->assertStatus(400)
+            ->assertJson([
+                "errors" => [
+                    'first_name' => [
+                        'The first name field is required.'
                     ]
                 ]
             ]);

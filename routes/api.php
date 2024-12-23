@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Api\AddressController;
 use App\Http\Controllers\Api\ContactController;
+use App\Http\Controllers\Api\UserCategoryController;
 use App\Http\Controllers\Api\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -33,5 +34,15 @@ Route::middleware('auth:api')->group(function () {
         Route::get('/{idContact}/addresses/{idAddress}', [AddressController::class, 'get'])->where('idContact', '[0-9]+')->where('idAddress', '[0-9]+');
         Route::put('/{idContact}/addresses/{idAddress}', [AddressController::class, 'update'])->where('idContact', '[0-9]+')->where('idAddress', '[0-9]+');
         Route::delete('/{idContact}/addresses/{idAddress}', [AddressController::class, 'delete'])->where('idContact', '[0-9]+')->where('idAddress', '[0-9]+');
+    });
+
+    Route::prefix('/user_category')->group(function () {
+        // User Category Management
+        Route::post('/', [UserCategoryController::class, 'create']);
+        Route::get('/', [UserCategoryController::class, 'list']);
+        Route::get('/search', [UserCategoryController::class, 'search']);
+        Route::get('/{id}', [UserCategoryController::class, 'get'])->where('id', '[0-9]+');
+        Route::put('/{id}', [UserCategoryController::class, 'update'])->where('id', '[0-9]+');
+        Route::delete('/{id}', [UserCategoryController::class, 'delete'])->where('id', '[0-9]+');
     });
 });

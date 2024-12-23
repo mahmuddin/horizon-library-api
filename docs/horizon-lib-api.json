@@ -1131,29 +1131,24 @@
                         "application/json": {
                             "examples": {
                                 "admin": {
-                                    "description": "Register user admin",
+                                    "description": "Create user category",
                                     "value": {
-                                        "category": "Admin",
-                                        "description": "Mengelola sistem secara penuh",
-                                        "privilege": "Semua fitur"
+                                        "name": "Superadmin",
+                                        "description": "Mengelola sistem secara penuh"
                                     }
                                 }
                             },
                             "schema": {
                                 "type": "object",
                                 "required": [
-                                    "category",
-                                    "description",
-                                    "privilege"
+                                    "name",
+                                    "description"
                                 ],
                                 "properties": {
-                                    "category": {
+                                    "name": {
                                         "type": "string"
                                     },
                                     "description": {
-                                        "type": "string"
-                                    },
-                                    "privilege": {
                                         "type": "string"
                                     }
                                 }
@@ -1172,9 +1167,8 @@
                                         "value": {
                                             "data": {
                                                 "id": 1,
-                                                "category": "Admin",
-                                                "description": "Mengelola sistem secara penuh",
-                                                "privilege": "Semua fitur"
+                                                "name": "Admin",
+                                                "description": "Mengelola sistem secara penuh"
                                             }
                                         }
                                     }
@@ -1188,13 +1182,10 @@
                                                 "id": {
                                                     "type": "number"
                                                 },
-                                                "category": {
+                                                "name": {
                                                     "type": "string"
                                                 },
                                                 "description": {
-                                                    "type": "string"
-                                                },
-                                                "privilege": {
                                                     "type": "string"
                                                 }
                                             }
@@ -1216,14 +1207,11 @@
                                         "description": "Validation error",
                                         "value": {
                                             "errors": {
-                                                "category": [
+                                                "name": [
                                                     "The category field is required."
                                                 ],
                                                 "description": [
                                                     "The description field is required."
-                                                ],
-                                                "privilege": [
-                                                    "The privilege field is required."
                                                 ]
                                             }
                                         }

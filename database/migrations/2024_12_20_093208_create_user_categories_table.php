@@ -13,9 +13,8 @@ return new class extends Migration
     {
         Schema::create('user_categories', function (Blueprint $table) {
             $table->id();
-            $table->string('category', 100)->comment('User Category or User Privilege');
-            $table->string('descriptions')->comment('Description of User Category or User Privilege');
-            $table->string('privilege', 100)->comment('Privilege of User Category or User Privilege');
+            $table->string('name', 100)->comment('User Category');
+            $table->string('description')->comment('Description of User Category or User Privilege');
             $table->timestamps();
         });
     }
