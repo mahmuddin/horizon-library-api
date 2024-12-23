@@ -36,7 +36,7 @@ Route::middleware('auth:api')->group(function () {
         Route::delete('/{idContact}/addresses/{idAddress}', [AddressController::class, 'delete'])->where('idContact', '[0-9]+')->where('idAddress', '[0-9]+');
     });
 
-    Route::prefix('/user_category')->group(function () {
+    Route::prefix('/user_categories')->group(function () {
         // User Category Management
         Route::post('/', [UserCategoryController::class, 'create']);
         Route::get('/', [UserCategoryController::class, 'list']);

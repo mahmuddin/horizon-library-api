@@ -39,10 +39,10 @@ class UserCategoryController extends Controller
      */
     public function list(): JsonResponse
     {
-        $user_category = UserCategory::all();
+        $user_categories = UserCategory::all();
 
         return response()->json([
-            'data' => UserCategoryResource::collection($user_category)
+            'data' => UserCategoryResource::collection($user_categories)
         ])->setStatusCode(200);
     }
 
@@ -55,9 +55,9 @@ class UserCategoryController extends Controller
     public function create(UserCategoryCreateRequest $request): JsonResponse
     {
         $data = $request->validated();
-        $user_category = new UserCategory($data);
-        $user_category->save();
-        return (new UserCategoryResource($user_category))->response()->setStatusCode(201);
+        $user_categories = new UserCategory($data);
+        $user_categories->save();
+        return (new UserCategoryResource($user_categories))->response()->setStatusCode(201);
     }
 
     /**
@@ -71,7 +71,7 @@ class UserCategoryController extends Controller
     {
         $page = $request->query('page', 1);
         $size = $request->input('size', 10);
-        $user_category = UserCategory::where(function (Builder $query) use ($request) {
+        $user_categories = UserCategory::where(function (Builder $query) use ($request) {
             $name = $request->input('name');
             $description = $request->input('description');
             if ($name) {
@@ -86,7 +86,7 @@ class UserCategoryController extends Controller
             }
         })
             ->paginate($size);
-        return new UserCategoryCollection($user_category);
+        return new UserCategoryCollection($user_categories);
     }
 
     /**
@@ -97,8 +97,8 @@ class UserCategoryController extends Controller
      */
     public function get(int $id): UserCategoryResource
     {
-        $user_category = $this->getUserCategory($id);
-        return new UserCategoryResource($user_category);
+        $user_categories = $this->getUserCategory($id);
+        return new UserCategoryResource($user_categories);
     }
 
     /**
@@ -110,16 +110,16 @@ class UserCategoryController extends Controller
      */
     public function update(int $id, UserCategoryUpdateRequest $request): UserCategoryResource
     {
-        $user_category = $this->getUserCategory($id);
+        $user_categories = $this->getUserCategory($id);
         $data = $request->validated();
-        $user_category->fill($data)->save();
-        return (new UserCategoryResource($user_category));
+        $user_categories->fill($data)->save();
+        return (new UserCategoryResource($user_categories));
     }
 
     public function delete(int $id): JsonResponse
     {
-        $user_category = $this->getUserCategory($id);
-        $user_category->delete();
+        $user_categories = $this->getUserCategory($id);
+        $user_categories->delete();
         return response()->json(['data' => true], 200);
     }
 }

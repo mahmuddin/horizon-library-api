@@ -28,7 +28,7 @@ class UserCategoryTest extends TestCase
         //Get Token
         $token = JWTAuth::attempt(['username' => 'test', 'password' => 'test']);
 
-        $response = $this->post('/api/user_category', [
+        $response = $this->post('/api/user_categories', [
             'name' => 'admin',
             'description' => 'admin'
         ], [
@@ -56,7 +56,7 @@ class UserCategoryTest extends TestCase
         //Get Token
         $token = JWTAuth::attempt(['username' => 'test', 'password' => 'test']);
 
-        $response = $this->post('/api/user_category', [
+        $response = $this->post('/api/user_categories', [
             'name' => '',
             'description' => ''
         ], [
@@ -84,7 +84,7 @@ class UserCategoryTest extends TestCase
         //Get Token
         $token = JWTAuth::attempt(['username' => 'test', 'password' => 'test']);
 
-        $response = $this->post('/api/user_category', [
+        $response = $this->post('/api/user_categories', [
             'name' => 'admin',
             'description' => 'admin'
         ], []);
@@ -110,10 +110,10 @@ class UserCategoryTest extends TestCase
             UserCategorySeeder::class
         ]);
         // Get User Category
-        $user_category = UserCategory::query()->limit(1)->first();
+        $user_categories = UserCategory::query()->limit(1)->first();
         //Get Token
         $token = JWTAuth::attempt(['username' => 'test', 'password' => 'test']);
-        $response = $this->get('/api/user_category/' . $user_category->id, [
+        $response = $this->get('/api/user_categories/' . $user_categories->id, [
             'Authorization' => 'Bearer ' . $token
         ]);
         $response->assertStatus(200)->assertJson([
@@ -139,10 +139,10 @@ class UserCategoryTest extends TestCase
             UserCategorySeeder::class
         ]);
         // Get User Category
-        $user_category = UserCategory::query()->limit(1)->first();
+        $user_categories = UserCategory::query()->limit(1)->first();
         //Get Token
         $token = JWTAuth::attempt(['username' => 'test', 'password' => 'test']);
-        $response = $this->get('/api/user_category/' . $user_category->id + 100, [
+        $response = $this->get('/api/user_categories/' . $user_categories->id + 100, [
             'Authorization' => 'Bearer ' . $token
         ]);
         $response->assertStatus(404)->assertJson([
@@ -168,7 +168,7 @@ class UserCategoryTest extends TestCase
         ]);
         //Get Token
         $token = JWTAuth::attempt(['username' => 'test', 'password' => 'test']);
-        $response = $this->get('/api/user_category', [
+        $response = $this->get('/api/user_categories', [
             'Authorization' => 'Bearer ' . $token
         ]);
         $response->assertStatus(200)->assertJson([
@@ -211,11 +211,11 @@ class UserCategoryTest extends TestCase
     public function testUpdateSuccess()
     {
         $this->seed([UserSeeder::class, UserCategorySeeder::class]);
-        $user_category = UserCategory::query()->limit(1)->first();
+        $user_categories = UserCategory::query()->limit(1)->first();
         // Get Token
         $token = JWTAuth::attempt(['username' => 'test', 'password' => 'test']);
         $response = $this->put(
-            "/api/user_category/{$user_category->id}",
+            "/api/user_categories/{$user_categories->id}",
             [
                 'name' => 'update',
                 'description' => 'update',
@@ -244,11 +244,11 @@ class UserCategoryTest extends TestCase
     public function testUpdateValidationError()
     {
         $this->seed([UserSeeder::class, UserCategorySeeder::class]);
-        $user_category = UserCategory::query()->limit(1)->first();
+        $user_categories = UserCategory::query()->limit(1)->first();
         // Get Token
         $token = JWTAuth::attempt(['username' => 'test', 'password' => 'test']);
         $response = $this->put(
-            "/api/user_category/{$user_category->id}",
+            "/api/user_categories/{$user_categories->id}",
             [
                 'name' => '',
                 'description' => '',
@@ -277,11 +277,11 @@ class UserCategoryTest extends TestCase
     public function testDeleteSuccess()
     {
         $this->seed([UserSeeder::class, UserCategorySeeder::class]);
-        $user_category = UserCategory::query()->limit(1)->first();
+        $user_categories = UserCategory::query()->limit(1)->first();
         // Get Token
         $token = JWTAuth::attempt(['username' => 'test', 'password' => 'test']);
         $response = $this->delete(
-            "/api/user_category/{$user_category->id}",
+            "/api/user_categories/{$user_categories->id}",
             [],
             [
                 'Authorization' => 'Bearer ' . $token
@@ -303,11 +303,11 @@ class UserCategoryTest extends TestCase
     public function testDeleteNotFound()
     {
         $this->seed([UserSeeder::class, UserCategorySeeder::class]);
-        $user_category = UserCategory::query()->limit(1)->first();
+        $user_categories = UserCategory::query()->limit(1)->first();
         // Get Token
         $token = JWTAuth::attempt(['username' => 'test', 'password' => 'test']);
         $response = $this->delete(
-            '/api/user_category/' . ($user_category->id + 100),
+            '/api/user_categories/' . ($user_categories->id + 100),
             [],
             [
                 'Authorization' => 'Bearer ' . $token
@@ -331,11 +331,11 @@ class UserCategoryTest extends TestCase
     public function testSearchByName()
     {
         $this->seed([UserSeeder::class, UserCategorySeeder::class]);
-        $user_category = UserCategory::query()->limit(1)->first();
+        $user_categories = UserCategory::query()->limit(1)->first();
         // Get Token
         $token = JWTAuth::attempt(['username' => 'test', 'password' => 'test']);
         $response = $this->get(
-            '/api/user_category/search?name=' . $user_category->name,
+            '/api/user_categories/search?name=' . $user_categories->name,
             [
                 'Authorization' => 'Bearer ' . $token
             ]
@@ -344,9 +344,9 @@ class UserCategoryTest extends TestCase
         $response->assertStatus(200)->assertJson([
             'data' => [
                 [
-                    'id' => $user_category->id,
-                    'name' => $user_category->name,
-                    'description' => $user_category->description,
+                    'id' => $user_categories->id,
+                    'name' => $user_categories->name,
+                    'description' => $user_categories->description,
                 ]
             ]
         ]);
@@ -362,11 +362,11 @@ class UserCategoryTest extends TestCase
     public function testSearchByDescription()
     {
         $this->seed([UserSeeder::class, UserCategorySeeder::class]);
-        $user_category = UserCategory::query()->limit(1)->first();
+        $user_categories = UserCategory::query()->limit(1)->first();
         // Get Token
         $token = JWTAuth::attempt(['username' => 'test', 'password' => 'test']);
         $response = $this->get(
-            '/api/user_category/search?description=' . $user_category->description,
+            '/api/user_categories/search?description=' . $user_categories->description,
             [
                 'Authorization' => 'Bearer ' . $token
             ]
@@ -375,9 +375,9 @@ class UserCategoryTest extends TestCase
         $response->assertStatus(200)->assertJson([
             'data' => [
                 [
-                    'id' => $user_category->id,
-                    'name' => $user_category->name,
-                    'description' => $user_category->description,
+                    'id' => $user_categories->id,
+                    'name' => $user_categories->name,
+                    'description' => $user_categories->description,
                 ]
             ]
         ]);
@@ -393,11 +393,11 @@ class UserCategoryTest extends TestCase
     public function testSearchNotFound()
     {
         $this->seed([UserSeeder::class, UserCategorySeeder::class]);
-        $user_category = UserCategory::query()->limit(1)->first();
+        $user_categories = UserCategory::query()->limit(1)->first();
         // Get Token
         $token = JWTAuth::attempt(['username' => 'test', 'password' => 'test']);
         $response = $this->get(
-            '/api/user_category/search?name=0tidak ada',
+            '/api/user_categories/search?name=0tidak ada',
             [
                 'Authorization' => 'Bearer ' . $token
             ]
@@ -411,11 +411,11 @@ class UserCategoryTest extends TestCase
     public function testSearchWithPage()
     {
         $this->seed([UserSeeder::class, SearchUserCategorySeeder::class]);
-        $user_category = UserCategory::query()->limit(1)->first();
+        $user_categories = UserCategory::query()->limit(1)->first();
         // Get Token
         $token = JWTAuth::attempt(['username' => 'test', 'password' => 'test']);
         $response = $this->get(
-            '/api/user_category/search?size=5&page=2',
+            '/api/user_categories/search?size=5&page=2',
             [
                 'Authorization' => 'Bearer ' . $token
             ]
