@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Api\AddressController;
 use App\Http\Controllers\Api\ContactController;
+use App\Http\Controllers\Api\LoanManagementController;
 use App\Http\Controllers\Api\UserCategoryController;
 use App\Http\Controllers\Api\UserController;
 use Illuminate\Http\Request;
@@ -44,5 +45,15 @@ Route::middleware('auth:api')->group(function () {
         Route::get('/{id}', [UserCategoryController::class, 'get'])->where('id', '[0-9]+');
         Route::put('/{id}', [UserCategoryController::class, 'update'])->where('id', '[0-9]+');
         Route::delete('/{id}', [UserCategoryController::class, 'delete'])->where('id', '[0-9]+');
+    });
+
+    Route::prefix('/loans')->group(function () {
+        // Loan Management
+        Route::post('/', [LoanManagementController::class, 'create']);
+        Route::get('/', [LoanManagementController::class, 'list']);
+        Route::get('/search', [LoanManagementController::class, 'search']);
+        Route::get('/{id}', [LoanManagementController::class, 'get'])->where('id', '[0-9]+');
+        Route::put('/{id}', [LoanManagementController::class, 'update'])->where('id', '[0-9]+');
+        Route::delete('/{id}', [LoanManagementController::class, 'delete'])->where('id', '[0-9]+');
     });
 });

@@ -5,7 +5,7 @@ namespace App\Http\Requests;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Exceptions\HttpResponseException;
 
-class UserUpdateRequest extends FormRequest
+class LoanCreateRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -23,12 +23,13 @@ class UserUpdateRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => ['nullable', 'max:100'],
-            'email' => ['nullable', 'email', 'max:100', 'unique:users,email,' . $this->user()->id . ',id'],
-            'username' => ['nullable', 'max:100'],
-            'password' => ['nullable', 'min:5', 'max:100'],
+            'member_id' => ['required', 'exists:users,id'],
+            'librarian_id' => ['required', 'exists:users,id'],
+            'loan_date' => ['required', 'date_format:Y-m-d H:i:s'],
+            'return_date' => ['nullable', 'date_format:Y-m-d H:i:s'],
         ];
     }
+
     protected function failedValidation($validator)
     {
         throw new HttpResponseException(response([

@@ -276,6 +276,26 @@ class UserTest extends TestCase
             ]);
     }
 
+    public function testUpdateEmailFailed()
+    {
+        // Running the UserSeeder
+        $this->seed(UserSeeder::class);
+        // Get Token
+        $token = JWTAuth::attempt(['username' => 'test', 'password' => 'test']);
+        // Update User with Long Name
+        $response = $this->patch('/api/users/current', [
+            'email' => 'test2@mail.com',
+        ], [
+            'Authorization' => 'Bearer ' . $token
+        ]);
+        $response->assertStatus(400)
+            ->assertJson([
+                "errors" => [
+                    'email' => ['The email has already been taken.']
+                ]
+            ]);
+    }
+
     public function testLogoutSuccess()
     {
         // Running the UserSeeder

@@ -19,8 +19,8 @@ class UserCategoryController extends Controller
 
     private function getUserCategory(int $idUserCategory): UserCategory
     {
-        $idUserCategory = UserCategory::where('id', $idUserCategory)->first();
-        if (!$idUserCategory) {
+        $userCategory = UserCategory::where('id', $idUserCategory)->first();
+        if (!$userCategory) {
             throw new HttpResponseException(response()->json([
                 'errors' => [
                     'message' => [
@@ -29,7 +29,7 @@ class UserCategoryController extends Controller
                 ]
             ], 404));
         }
-        return $idUserCategory;
+        return $userCategory;
     }
 
     /**
