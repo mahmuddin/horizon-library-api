@@ -19,15 +19,15 @@ class UserTestSeeder extends Seeder
             UserCategorySeeder::class
         ]);
 
-        $member = UserCategory::query()->where('name', 'Anggota')->first();
-        $library = UserCategory::query()->where('name', 'Pustakawan')->first();
+        $member_category = UserCategory::query()->where('name', 'Anggota')->first();
+        $library_category = UserCategory::query()->where('name', 'Pustakawan')->first();
 
         User::create([
             'name' => 'Test User',
             'email' => 'test@mail.com',
             'username' => 'test',
             'password' => Hash::make('test'),
-            'user_category_id' => $member->id
+            'user_category_id' => $member_category->id
         ]);
 
         User::create([
@@ -35,7 +35,7 @@ class UserTestSeeder extends Seeder
             'email' => 'test2@mail.com',
             'username' => 'test2',
             'password' => Hash::make('test2'),
-            'user_category_id' => $library->id
+            'user_category_id' => $library_category->id
         ]);
     }
 }
