@@ -15,6 +15,13 @@ use Illuminate\Http\Exceptions\HttpResponseException;
 
 class LoanManagementController extends Controller
 {
+    /**
+     * Return a Loan instance or throw a 404 exception.
+     *
+     * @param int $idLoan
+     * @return Loan
+     * @throws HttpResponseException
+     */
     private function getLoan(int $idLoan): Loan
     {
         $loan = Loan::with('member', 'librarian')->find($idLoan);
@@ -58,6 +65,12 @@ class LoanManagementController extends Controller
         ])->setStatusCode(200);
     }
 
+    /**
+     * Search for loans with filter.
+     *
+     * @param LoanSearchRequest $request
+     * @return LoanCollection
+     */
     public function search(LoanSearchRequest $request): LoanCollection
     {
         $data = $request->validated();
@@ -97,12 +110,27 @@ class LoanManagementController extends Controller
         return new LoanCollection($loans);
     }
 
+    /**
+     * Retrieve a loan by its ID.
+     *
+     * @param int $id ID of the loan
+     * @return LoanResource The loan in JSON format
+     * @throws HttpResponseException If the loan is not found
+     */
     public function get(int $id): LoanResource
     {
         $loan = $this->getLoan($id);
         return new LoanResource($loan);
     }
 
+    /**
+     * Update a loan.
+     *
+     * @param int $id ID of the loan
+     * @param LoanCreateRequest $request Request containing the new loan data
+     * @return JsonResponse The updated loan in JSON format
+     * @throws HttpResponseException If the loan is not found
+     */
     public function update(int $id, LoanCreateRequest $request): JsonResponse
     {
         $loan = $this->getLoan($id);
@@ -112,6 +140,13 @@ class LoanManagementController extends Controller
         return (new LoanResource($loan))->response()->setStatusCode(200);
     }
 
+    /**
+     * Delete a loan by its ID.
+     *
+     * @param int $id ID of the loan
+     * @return JsonResponse The response containing a boolean indicating whether the deletion was successful
+     * @throws HttpResponseException If the loan is not found
+     */
     public function delete(int $id): JsonResponse
     {
         $loan = $this->getLoan($id);
