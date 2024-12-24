@@ -92,7 +92,7 @@ class AddressTest extends TestCase
         $response->assertStatus(404)
             ->assertJson([
                 "errors" => [
-                    'message' => ['not found']
+                    'message' => ['not found.']
                 ]
             ]);
     }
@@ -140,7 +140,7 @@ class AddressTest extends TestCase
         $response->assertStatus(404)
             ->assertJson([
                 "errors" => [
-                    "message" => ['not found']
+                    "message" => ['not found.']
                 ]
             ]);
     }
@@ -228,7 +228,7 @@ class AddressTest extends TestCase
         $response->assertStatus(404)
             ->assertJson([
                 "errors" => [
-                    'message' => ['not found'],
+                    'message' => ['not found.'],
                 ]
             ]);
     }
@@ -271,7 +271,7 @@ class AddressTest extends TestCase
         $response->assertStatus(404)
             ->assertJson([
                 "errors" => [
-                    'message' => ['not found'],
+                    'message' => ['not found.'],
                 ]
             ]);
     }
@@ -319,7 +319,7 @@ class AddressTest extends TestCase
         $response->assertStatus(404)
             ->assertJson([
                 "errors" => [
-                    'message' => ['not found'],
+                    'message' => ['not found.'],
                 ]
             ]);
     }

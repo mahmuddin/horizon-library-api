@@ -31,7 +31,7 @@ class AddressController extends Controller
             throw new HttpResponseException(response()->json([
                 'errors' => [
                     'message' => [
-                        'not found'
+                        'not found.'
                     ]
                 ]
             ], 404));
@@ -62,7 +62,7 @@ class AddressController extends Controller
             throw new HttpResponseException(response()->json([
                 'errors' => [
                     'message' => [
-                        'not found'
+                        'not found.'
                     ]
                 ]
             ], 404));

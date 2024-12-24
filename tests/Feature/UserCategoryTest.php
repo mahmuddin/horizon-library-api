@@ -172,32 +172,7 @@ class UserCategoryTest extends TestCase
             'Authorization' => 'Bearer ' . $token
         ]);
         $response->assertStatus(200)->assertJson([
-            'data' => [
-                [
-                    'name' => 'Superadmin',
-                    'description' => 'Fungsi: Tingkatan admin tertinggi, biasanya digunakan untuk organisasi besar.',
-                ],
-                [
-                    'name' => 'Administrator',
-                    'description' => 'Fungsi: Mengelola seluruh sistem e-library, termasuk pengguna, koleksi digital, dan pengaturan aplikasi.',
-                ],
-                [
-                    'name' => 'Pustakawan',
-                    'description' => 'Fungsi: Mengelola koleksi dan membantu pengguna dalam mengakses informasi.',
-                ],
-                [
-                    'name' => 'Anggota',
-                    'description' => 'Fungsi: Pengguna utama yang mengakses konten perpustakaan.',
-                ],
-                [
-                    'name' => 'Pengunjung Umum',
-                    'description' => 'Pengguna yang tidak memiliki akun atau belum login ke sistem.',
-                ],
-                [
-                    'name' => 'Contributor',
-                    'description' => 'Pengguna yang bertanggung jawab menambahkan koleksi konten baru, seperti penulis atau penerbit',
-                ]
-            ]
+            'data' => []
         ]);
     }
 

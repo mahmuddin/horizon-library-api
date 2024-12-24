@@ -29,7 +29,7 @@ class LoanManagementController extends Controller
             throw new HttpResponseException(response()->json([
                 'errors' => [
                     'message' => [
-                        'not found'
+                        'not found.'
                     ]
                 ]
             ])->setStatusCode(404));
