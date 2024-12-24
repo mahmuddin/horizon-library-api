@@ -1690,6 +1690,18 @@
                                                                 },
                                                                 "name": {
                                                                     "type": "string"
+                                                                },
+                                                                "email": {
+                                                                    "type": "string"
+                                                                },
+                                                                "username": {
+                                                                    "type": "string"
+                                                                },
+                                                                "email_verified_at": {
+                                                                    "type": "string"
+                                                                },
+                                                                "user_category_id": {
+                                                                    "type": "number"
                                                                 }
                                                             }
                                                         },
@@ -1701,6 +1713,18 @@
                                                                 },
                                                                 "name": {
                                                                     "type": "string"
+                                                                },
+                                                                "email": {
+                                                                    "type": "string"
+                                                                },
+                                                                "username": {
+                                                                    "type": "string"
+                                                                },
+                                                                "email_verified_at": {
+                                                                    "type": "string"
+                                                                },
+                                                                "user_category_id": {
+                                                                    "type": "number"
                                                                 }
                                                             }
                                                         }
@@ -1735,6 +1759,611 @@
                                                     "The loan date field is required."
                                                 ]
                                             }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "get": {
+                "tags": [
+                    "Loan"
+                ],
+                "summary": "List loans",
+                "description": "List loans",
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "parameters": [],
+                "responses": {
+                    "200": {
+                        "description": "Success get list loans",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "type": "object",
+                                                "properties": {
+                                                    "id": {
+                                                        "type": "number"
+                                                    },
+                                                    "loan_date": {
+                                                        "type": "string"
+                                                    },
+                                                    "return_date": {
+                                                        "type": "string"
+                                                    },
+                                                    "relationships": {
+                                                        "type": "object",
+                                                        "properties": {
+                                                            "member": {
+                                                                "type": "object",
+                                                                "properties": {
+                                                                    "id": {
+                                                                        "type": "number"
+                                                                    },
+                                                                    "name": {
+                                                                        "type": "string"
+                                                                    },
+                                                                    "email": {
+                                                                        "type": "string"
+                                                                    },
+                                                                    "username": {
+                                                                        "type": "string"
+                                                                    },
+                                                                    "email_verified_at": {
+                                                                        "type": "string"
+                                                                    }
+                                                                }
+                                                            },
+                                                            "librarian": {
+                                                                "type": "object",
+                                                                "properties": {
+                                                                    "id": {
+                                                                        "type": "number"
+                                                                    },
+                                                                    "name": {
+                                                                        "type": "string"
+                                                                    },
+                                                                    "email": {
+                                                                        "type": "string"
+                                                                    },
+                                                                    "username": {
+                                                                        "type": "string"
+                                                                    },
+                                                                    "email_verified_at": {
+                                                                        "type": "string"
+                                                                    }
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        },
+                                        "errors": {
+                                            "type": "object"
+                                        },
+                                        "meta": {
+                                            "type": "object",
+                                            "properties": {
+                                                "pagination": {
+                                                    "type": "object",
+                                                    "properties": {
+                                                        "total": {
+                                                            "type": "number"
+                                                        },
+                                                        "count": {
+                                                            "type": "number"
+                                                        },
+                                                        "per_page": {
+                                                            "type": "number"
+                                                        },
+                                                        "current_page": {
+                                                            "type": "number"
+                                                        },
+                                                        "total_pages": {
+                                                            "type": "number"
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/loans/search": {
+            "get": {
+                "tags": [
+                    "Loan"
+                ],
+                "summary": "Search loans",
+                "description": "Search loans",
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "parameters": [
+                    {
+                        "name": "member_id",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "librarian_id",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "loan_date",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "return_date",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "size",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success search loans",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "type": "object",
+                                                "properties": {
+                                                    "id": {
+                                                        "type": "number"
+                                                    },
+                                                    "loan_date": {
+                                                        "type": "string"
+                                                    },
+                                                    "return_date": {
+                                                        "type": "string"
+                                                    },
+                                                    "relationships": {
+                                                        "type": "object",
+                                                        "properties": {
+                                                            "member": {
+                                                                "type": "object",
+                                                                "properties": {
+                                                                    "id": {
+                                                                        "type": "number"
+                                                                    },
+                                                                    "name": {
+                                                                        "type": "string"
+                                                                    },
+                                                                    "email": {
+                                                                        "type": "string"
+                                                                    },
+                                                                    "username": {
+                                                                        "type": "string"
+                                                                    },
+                                                                    "email_verified_at": {
+                                                                        "type": "string"
+                                                                    },
+                                                                    "user_category_id": {
+                                                                        "type": "number"
+                                                                    }
+                                                                }
+                                                            },
+                                                            "librarian": {
+                                                                "type": "object",
+                                                                "properties": {
+                                                                    "id": {
+                                                                        "type": "number"
+                                                                    },
+                                                                    "name": {
+                                                                        "type": "string"
+                                                                    },
+                                                                    "email": {
+                                                                        "type": "string"
+                                                                    },
+                                                                    "username": {
+                                                                        "type": "string"
+                                                                    },
+                                                                    "email_verified_at": {
+                                                                        "type": "string"
+                                                                    },
+                                                                    "user_category_id": {
+                                                                        "type": "number"
+                                                                    }
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        },
+                                        "errors": {
+                                            "type": "object"
+                                        },
+                                        "meta": {
+                                            "type": "object",
+                                            "properties": {
+                                                "pagination": {
+                                                    "type": "object",
+                                                    "properties": {
+                                                        "total": {
+                                                            "type": "number"
+                                                        },
+                                                        "count": {
+                                                            "type": "number"
+                                                        },
+                                                        "per_page": {
+                                                            "type": "number"
+                                                        },
+                                                        "current_page": {
+                                                            "type": "number"
+                                                        },
+                                                        "total_pages": {
+                                                            "type": "number"
+                                                        },
+                                                        "previous_page_url": {
+                                                            "type": "string"
+                                                        },
+                                                        "next_page_url": {
+                                                            "type": "string"
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/loans/{id}": {
+            "put": {
+                "tags": [
+                    "Loan"
+                ],
+                "summary": "Update loan",
+                "description": "Update loan",
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "description": "Update loan",
+                            "schema": {
+                                "type": "object",
+                                "required": [
+                                    "member_id",
+                                    "librarian_id",
+                                    "loan_date"
+                                ],
+                                "properties": {
+                                    "member_id": {
+                                        "type": "number"
+                                    },
+                                    "librarian_id": {
+                                        "type": "number"
+                                    },
+                                    "loan_date": {
+                                        "type": "string"
+                                    },
+                                    "return_date": {
+                                        "type": "string"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success update loan",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "type": "object",
+                                            "properties": {
+                                                "id": {
+                                                    "type": "number"
+                                                },
+                                                "loan_date": {
+                                                    "type": "string"
+                                                },
+                                                "return_date": {
+                                                    "type": "string"
+                                                },
+                                                "relationships": {
+                                                    "type": "object",
+                                                    "properties": {
+                                                        "member": {
+                                                            "type": "object",
+                                                            "properties": {
+                                                                "id": {
+                                                                    "type": "number"
+                                                                },
+                                                                "name": {
+                                                                    "type": "string"
+                                                                },
+                                                                "email": {
+                                                                    "type": "string"
+                                                                },
+                                                                "username": {
+                                                                    "type": "string"
+                                                                },
+                                                                "email_verified_at": {
+                                                                    "type": "string"
+                                                                },
+                                                                "user_category_id": {
+                                                                    "type": "number"
+                                                                }
+                                                            }
+                                                        },
+                                                        "librarian": {
+                                                            "type": "object",
+                                                            "properties": {
+                                                                "id": {
+                                                                    "type": "number"
+                                                                },
+                                                                "name": {
+                                                                    "type": "string"
+                                                                },
+                                                                "email": {
+                                                                    "type": "string"
+                                                                },
+                                                                "username": {
+                                                                    "type": "string"
+                                                                },
+                                                                "email_verified_at": {
+                                                                    "type": "string"
+                                                                },
+                                                                "user_category_id": {
+                                                                    "type": "number"
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "get": {
+                "tags": [
+                    "Loan"
+                ],
+                "summary": "Get loan",
+                "description": "Get loan",
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success get loan",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "type": "object",
+                                            "properties": {
+                                                "id": {
+                                                    "type": "number"
+                                                },
+                                                "loan_date": {
+                                                    "type": "string"
+                                                },
+                                                "return_date": {
+                                                    "type": "string"
+                                                },
+                                                "relationships": {
+                                                    "type": "object",
+                                                    "properties": {
+                                                        "member": {
+                                                            "type": "object",
+                                                            "properties": {
+                                                                "id": {
+                                                                    "type": "number"
+                                                                },
+                                                                "name": {
+                                                                    "type": "string"
+                                                                },
+                                                                "email": {
+                                                                    "type": "string"
+                                                                },
+                                                                "username": {
+                                                                    "type": "string"
+                                                                },
+                                                                "email_verified_at": {
+                                                                    "type": "string"
+                                                                },
+                                                                "user_category_id": {
+                                                                    "type": "number"
+                                                                }
+                                                            }
+                                                        },
+                                                        "librarian": {
+                                                            "type": "object",
+                                                            "properties": {
+                                                                "id": {
+                                                                    "type": "number"
+                                                                },
+                                                                "name": {
+                                                                    "type": "string"
+                                                                },
+                                                                "email": {
+                                                                    "type": "string"
+                                                                },
+                                                                "username": {
+                                                                    "type": "string"
+                                                                },
+                                                                "email_verified_at": {
+                                                                    "type": "string"
+                                                                },
+                                                                "user_category_id": {
+                                                                    "type": "number"
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        },
+                                        "errors": {
+                                            "type": "object"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "errors": {
+                                            "type": "object"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unaauthenticated",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "errors": {
+                                            "type": "object"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Loan"
+                ],
+                "summary": "Delete loan",
+                "description": "Delete loan",
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success delete loan",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "type": "boolean"
+                                        },
+                                        "errors": {
+                                            "type": "object"
                                         }
                                     }
                                 }
