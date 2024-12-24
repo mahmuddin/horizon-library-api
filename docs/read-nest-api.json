@@ -406,6 +406,9 @@
                                     },
                                     "phone": {
                                         "type": "string"
+                                    },
+                                    "gender": {
+                                        "type": "string"
                                     }
                                 }
                             }
@@ -436,6 +439,9 @@
                                                     "type": "string"
                                                 },
                                                 "phone": {
+                                                    "type": "string"
+                                                },
+                                                "gender": {
                                                     "type": "string"
                                                 }
                                             }
@@ -599,6 +605,9 @@
                                                     },
                                                     "phone": {
                                                         "type": "string"
+                                                    },
+                                                    "gender": {
+                                                        "type": "string"
                                                     }
                                                 }
                                             }
@@ -671,6 +680,9 @@
                                     },
                                     "phone": {
                                         "type": "string"
+                                    },
+                                    "gender": {
+                                        "type": "string"
                                     }
                                 }
                             }
@@ -701,6 +713,9 @@
                                                     "type": "string"
                                                 },
                                                 "phone": {
+                                                    "type": "string"
+                                                },
+                                                "gender": {
                                                     "type": "string"
                                                 }
                                             }
