@@ -56,4 +56,11 @@ Route::middleware('auth:api')->group(function () {
         Route::put('/{id}', [LoanManagementController::class, 'update'])->where('id', '[0-9]+');
         Route::delete('/{id}', [LoanManagementController::class, 'delete'])->where('id', '[0-9]+');
     });
+
+    Route::prefix('/authors')->group(function () {
+        // Authors Management
+
+    });
+
+    Route::prefix('/books')->group(function () {});
 });

@@ -55,6 +55,7 @@ class UserResource extends JsonResource
                             'email' => $contact->email,
                             'phone' => $contact->phone,
                             'addresses' => $contact->addresses,
+                            'gender' => $contact->gender,
                         ];
                     }),
                 ],
