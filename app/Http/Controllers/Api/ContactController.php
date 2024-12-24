@@ -49,8 +49,19 @@ class ContactController extends Controller
      */
     public function create(ContactCreateRequest $request): JsonResponse
     {
-        $data = $request->validated();
         $user = Auth::user();
+        // Prevent users from creating second contact
+        if (Contact::where('user_id', $user->id)->count() > 0) {
+            throw new HttpResponseException(response()->json([
+                'errors' => [
+                    'message' => [
+                        'You can only have one contact.'
+                    ]
+                ]
+            ], 400));
+        }
+
+        $data = $request->validated();
         $contact = new Contact($data);
         $contact->user_id = $user->id;
         $contact->save();

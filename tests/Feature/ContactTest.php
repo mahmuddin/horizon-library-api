@@ -456,8 +456,8 @@ class ContactTest extends TestCase
         Log::info(json_encode($responseData, JSON_PRETTY_PRINT));
 
         // Assert values
-        self::assertEquals(10, count($responseData['data']));
-        self::assertEquals(20, $responseData['meta']['total']);
+        self::assertEquals(1, count($responseData['data']));
+        self::assertEquals(1, $responseData['meta']['total']);
     }
 
     /**
@@ -490,8 +490,8 @@ class ContactTest extends TestCase
         Log::info(json_encode($responseData, JSON_PRETTY_PRINT));
 
         // Assert values
-        self::assertEquals(10, count($responseData['data']));
-        self::assertEquals(20, $responseData['meta']['total']);
+        self::assertEquals(1, count($responseData['data']));
+        self::assertEquals(1, $responseData['meta']['total']);
     }
 
     /**
@@ -524,8 +524,8 @@ class ContactTest extends TestCase
         Log::info(json_encode($responseData, JSON_PRETTY_PRINT));
 
         // Assert values
-        self::assertEquals(10, count($responseData['data']));
-        self::assertEquals(20, $responseData['meta']['total']);
+        self::assertEquals(1, count($responseData['data']));
+        self::assertEquals(1, $responseData['meta']['total']);
     }
 
     /**
@@ -573,7 +573,7 @@ class ContactTest extends TestCase
         // Get Token
         $token = JWTAuth::attempt(['username' => 'test', 'password' => 'test']);
         // Get Contact
-        $response = $this->get('/api/contacts/search?size=5&page=2', [
+        $response = $this->get('/api/contacts/search?size=1&page=1', [
             'Authorization' => 'Bearer ' . $token
         ]);
         $response->assertStatus(200);
@@ -584,8 +584,8 @@ class ContactTest extends TestCase
         Log::info(json_encode($responseData, JSON_PRETTY_PRINT));
 
         // Assert values
-        self::assertEquals(5, count($responseData['data']));
-        self::assertEquals(20, $responseData['meta']['total']);
-        self::assertEquals(2, $responseData['meta']['current_page']);
+        self::assertEquals(1, count($responseData['data']));
+        self::assertEquals(1, $responseData['meta']['total']);
+        self::assertEquals(1, $responseData['meta']['current_page']);
     }
 }
