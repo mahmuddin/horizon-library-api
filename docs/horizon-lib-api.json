@@ -36,6 +36,10 @@
         {
             "name": "User Category",
             "description": "Endpoints related to user category management"
+        },
+        {
+            "name": "Loan",
+            "description": "Endpoints related to loan management"
         }
     ],
     "paths": {
@@ -50,8 +54,8 @@
                     "content": {
                         "application/json": {
                             "examples": {
-                                "mahmuddin": {
-                                    "description": "Register user mahmuddin",
+                                "success": {
+                                    "description": "Register new user",
                                     "value": {
                                         "username": "mahmuddin",
                                         "password": "mahmuddin",
@@ -248,6 +252,9 @@
                                                 },
                                                 "name": {
                                                     "type": "string"
+                                                },
+                                                "email": {
+                                                    "type": "string"
                                                 }
                                             }
                                         },
@@ -285,6 +292,9 @@
                                     },
                                     "password": {
                                         "type": "string"
+                                    },
+                                    "email": {
+                                        "type": "string"
                                     }
                                 }
                             }
@@ -309,6 +319,9 @@
                                                     "type": "string"
                                                 },
                                                 "name": {
+                                                    "type": "string"
+                                                },
+                                                "email": {
                                                     "type": "string"
                                                 }
                                             }
@@ -1595,6 +1608,133 @@
                                         },
                                         "errors": {
                                             "type": "object"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/loans": {
+            "post": {
+                "tags": [
+                    "Loan"
+                ],
+                "summary": "Create a new loan",
+                "description": "Create a new loan",
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "parameters": [],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "description": "Create a new loan",
+                            "schema": {
+                                "type": "object",
+                                "required": [
+                                    "member_id",
+                                    "librarian_id",
+                                    "loan_date"
+                                ],
+                                "properties": {
+                                    "member_id": {
+                                        "type": "number"
+                                    },
+                                    "librarian_id": {
+                                        "type": "number"
+                                    },
+                                    "loan_date": {
+                                        "type": "string"
+                                    },
+                                    "return_date": {
+                                        "type": "string"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Success create loan",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "type": "object",
+                                            "properties": {
+                                                "id": {
+                                                    "type": "number"
+                                                },
+                                                "loan_date": {
+                                                    "type": "string"
+                                                },
+                                                "return_date": {
+                                                    "type": "string"
+                                                },
+                                                "relationships": {
+                                                    "type": "object",
+                                                    "properties": {
+                                                        "member": {
+                                                            "type": "object",
+                                                            "properties": {
+                                                                "id": {
+                                                                    "type": "number"
+                                                                },
+                                                                "name": {
+                                                                    "type": "string"
+                                                                }
+                                                            }
+                                                        },
+                                                        "librarian": {
+                                                            "type": "object",
+                                                            "properties": {
+                                                                "id": {
+                                                                    "type": "number"
+                                                                },
+                                                                "name": {
+                                                                    "type": "string"
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        },
+                                        "errors": {
+                                            "type": "object"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Validation error",
+                        "content": {
+                            "application/json": {
+                                "examples": {
+                                    "validationerror": {
+                                        "description": "Validation error",
+                                        "value": {
+                                            "errors": {
+                                                "member_id": [
+                                                    "The member id field is required."
+                                                ],
+                                                "librarian_id": [
+                                                    "The librarian id field is required."
+                                                ],
+                                                "loan_date": [
+                                                    "The loan date field is required."
+                                                ]
+                                            }
                                         }
                                     }
                                 }
