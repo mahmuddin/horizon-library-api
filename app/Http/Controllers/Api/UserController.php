@@ -46,29 +46,32 @@ class UserController extends Controller
     }
 
     /**
-     * Authenticates a user with the given credentials and returns a JSON response containing the user's info and a JWT token.
+     * Authenticates a user with the given credentials and returns a JSON response containing the user's info, an access token, and a refresh token.
      *
      * @param UserLoginRequest $request
      * @return UserResource
+     * @throws HttpResponseException
      */
     public function login(UserLoginRequest $request): UserResource
     {
         $data = $request->validated();
 
-        $user = User::where('username', $data['username'])->first();
+        // select user by username or email
+        $user = User::where(function ($query) use ($data) {
+            $query->where('username', $data['username'])
+                ->orWhere('email', $data['username']);
+        })->first();
 
         if (!$user || !Hash::check($data['password'], $user->password)) {
             throw new HttpResponseException(response([
                 'errors' => [
-                    'message' => ['Username or password is incorrect.']
+                    'message' => ['Username or email or password is incorrect.']
                 ]
             ], 401));
         }
 
-        $token = JWTAuth::claims(['type' => 'access'])->attempt([
-            'username' => $data['username'],
-            'password' => $data['password']
-        ]);
+        // Generate access token based on user
+        $token = JWTAuth::fromUser($user);
 
         if (!$token) {
             throw new HttpResponseException(response([

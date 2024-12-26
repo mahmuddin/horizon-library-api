@@ -52,10 +52,15 @@ class User extends Authenticatable implements JWTSubject
         ];
     }
 
-    // Menentukan kolom yang digunakan untuk autentikasi
+    /**
+     * Find a user instance by username or email for Passport authentication.
+     *
+     * @param string $username
+     * @return static|null
+     */
     public static function findForPassport($username)
     {
-        return static::where('username', $username)->first();
+        return static::where('username', $username)->orWhere('email', $username)->first();
     }
 
     /**
