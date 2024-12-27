@@ -96,6 +96,27 @@ class UserTest extends TestCase
             ]);
     }
 
+    public function testLoginWithEmailSuccess()
+    {
+        // Running the UserSeeder
+        $this->seed(UserSeeder::class);
+
+        // Login
+        $response = $this->post('/api/users/login', [
+            'username' => 'test@mail.com',
+            'password' => 'test'
+        ]);
+
+        $response->assertStatus(200)
+            ->assertJson([
+                'data' => [
+                    'name' => 'Test User',
+                    'email' => 'test@mail.com',
+                    'username' => 'test',
+                ]
+            ]);
+    }
+
     public function testLoginFailedUsernameNotFound()
     {
         //Login with username not found
@@ -106,7 +127,7 @@ class UserTest extends TestCase
         $response->assertStatus(401)
             ->assertJson([
                 "errors" => [
-                    "message" => ['Username or password is incorrect.']
+                    "message" => ['Username or email or password is incorrect.']
                 ]
             ]);
     }
@@ -123,7 +144,7 @@ class UserTest extends TestCase
         $response->assertStatus(401)
             ->assertJson([
                 "errors" => [
-                    'message' => ['Username or password is incorrect.']
+                    'message' => ['Username or email or password is incorrect.']
                 ]
             ]);
     }

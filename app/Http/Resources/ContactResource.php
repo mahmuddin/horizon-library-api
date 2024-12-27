@@ -4,6 +4,7 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
+use Illuminate\Support\Facades\Storage;
 
 class ContactResource extends JsonResource
 {
@@ -21,6 +22,7 @@ class ContactResource extends JsonResource
             'email' => $this->email,
             'phone' => $this->phone,
             'gender' => $this->gender,
+            'profile_image' => Storage::url($this->profile_image),
             'relationships' => [
                 'user' => $this->user,
                 'addresses' => $this->addresses,

@@ -8,7 +8,9 @@ use Database\Seeders\SearchSeeder;
 use Database\Seeders\UserSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
+use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Storage;
 use Tests\TestCase;
 use Tymon\JWTAuth\Facades\JWTAuth;
 
@@ -50,6 +52,57 @@ class ContactTest extends TestCase
             ]
         ]);
     }
+
+    public function testCreateWithUploadImageSuccess()
+    {
+        // Jalankan seeder untuk data pengguna
+        $this->seed(UserSeeder::class);
+
+        // Dapatkan token otentikasi
+        $token = JWTAuth::attempt(['username' => 'test', 'password' => 'test']);
+
+        // Palsukan penyimpanan disk 'public'
+        Storage::fake('public');
+
+        // Kirim request untuk membuat kontak baru dengan file gambar
+        $response = $this->post(
+            '/api/contacts',
+            [
+                'first_name' => 'Test',
+                'last_name' => 'User',
+                'phone' => '1234567890',
+                'email' => 'test_user@mail',
+                'profile_image' => UploadedFile::fake()->image('avatar.png', 100, 100),
+            ],
+            [
+                'Authorization' => 'Bearer ' . $token,
+            ]
+        );
+
+        // Periksa respons berhasil dan isi JSON
+        $response->assertStatus(201)
+            ->assertJsonPath('data.first_name', 'Test')
+            ->assertJsonPath('data.last_name', 'User')
+            ->assertJsonPath('data.phone', '1234567890')
+            ->assertJsonPath('data.email', 'test_user@mail');
+
+        // Ambil URL file dari respons
+        $uploadedFile = $response->json('data.profile_image');
+
+        // Ubah URL file menjadi path relatif untuk disk 'public'
+        $relativePath = str_replace('/storage/', '', parse_url($uploadedFile, PHP_URL_PATH));
+
+        // Tambahkan direktori 'user_images' ke dalam path
+        $expectedPath = 'user_images/' . basename($relativePath);
+
+        // Verifikasi keberadaan file menggunakan Storage::exists
+        $this->assertTrue(
+            Storage::disk('public')->exists($expectedPath),
+            "File tidak ditemukan di penyimpanan: {$expectedPath}"
+        );
+    }
+
+
 
     /**
      * Tests that creating a contact fails when required fields are invalid.

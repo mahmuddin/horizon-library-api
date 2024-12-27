@@ -28,6 +28,7 @@ class ContactUpdateRequest extends FormRequest
             'email' => ['nullable', 'max:200', 'email'],
             'phone' => ['nullable', 'max:20'],
             'gender' => ['nullable', 'in:male,female'],
+            'profile_image' => ['nullable', 'image', 'mimes:jpeg,png,jpg,gif', 'max:2048'],
         ];
     }
 

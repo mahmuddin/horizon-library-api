@@ -20,6 +20,7 @@ return new class extends Migration
             $table->date('date_of_birth')->nullable();
             $table->unsignedBigInteger('user_id')->nullable(false)->index('contacts_user_id_foreign');
             $table->enum('gender', ['male', 'female'])->nullable();
+            $table->string('profile_image')->nullable();
             $table->timestamps();
 
             $table->foreign('user_id', 'contacts_user_id_foreign')->references('id')->on('users')->onUpdate('CASCADE')->onDelete('CASCADE');

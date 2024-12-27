@@ -28,6 +28,7 @@ class ContactCreateRequest extends FormRequest
             'email' => ['nullable', 'email', 'max:200'],
             'phone' => ['nullable', 'max:20'],
             'gender' => ['nullable', 'in:male,female'],
+            'profile_image' => ['nullable', 'image', 'mimes:jpeg,png,jpg,gif', 'max:2048'],
         ];
     }
 

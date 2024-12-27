@@ -15,6 +15,7 @@ use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Contracts\Database\Eloquent\Builder;
+use Illuminate\Support\Facades\Storage;
 
 class ContactController extends Controller
 {
@@ -62,6 +63,16 @@ class ContactController extends Controller
         }
 
         $data = $request->validated();
+
+        // Proses gambar (jika ada)
+        if ($request->hasFile('profile_image')) {
+            // Simpan gambar ke storage/images
+            $imagePath = $request->file('profile_image')->store('user_images', 'public');
+            // Tambahkan path gambar ke dalam data
+            $data['profile_image'] = $imagePath;
+        }
+
+        // Buat model Contact baru dengan data
         $contact = new Contact($data);
         $contact->user_id = $user->id;
         $contact->save();
@@ -144,6 +155,22 @@ class ContactController extends Controller
         $user = Auth::user();
         $contact = $this->getContacts($id, $user);
         $data = $request->validated();
+
+        // Proses unggahan file (jika ada)
+        if ($request->hasFile('profile_image')) {
+            // Hapus file lama jika ada
+            if ($contact->profile_image) {
+                Storage::disk('public')->delete($contact->profile_image);
+            }
+
+            // Simpan file baru ke disk 'public'
+            $profileImagePath = $request->file('profile_image')->store('user_images', 'public');
+
+            // Tambahkan path baru ke dalam data
+            $data['profile_image'] = $profileImagePath;
+        }
+
+        // Perbarui data
         $contact->fill($data);
         $contact->save();
         return new ContactResource($contact);
@@ -160,6 +187,12 @@ class ContactController extends Controller
     {
         $user = Auth::user();
         $contact = $this->getContacts($id, $user);
+
+        // Hapus file profile_image jika ada
+        if ($contact->profile_image) {
+            Storage::disk('public')->delete($contact->profile_image);
+        }
+        // Hapus kontak dari database
         $contact->delete();
         return response()->json(['data' => true], 200);
     }
