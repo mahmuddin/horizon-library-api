@@ -15,8 +15,8 @@ return new class extends Migration
             $table->id();
             $table->string('name', 100)->nullable(false);
             $table->string('address')->nullable();
-            $table->string('phone')->nullable();
-            $table->string('email')->nullable();
+            $table->string('phone', 20)->nullable();
+            $table->string('email', 100)->nullable();
             $table->string('website')->nullable();
             $table->string('bio')->nullable()->comment('describe the author bibliography');
             $table->string('profile_image')->nullable();

@@ -102,8 +102,6 @@ class ContactTest extends TestCase
         );
     }
 
-
-
     /**
      * Tests that creating a contact fails when required fields are invalid.
      *
@@ -111,7 +109,6 @@ class ContactTest extends TestCase
      * missing and invalid fields. It checks that the response is 400
      * and contains the appropriate validation error messages.
      */
-
     public function testCreateFailed()
     {
         // Running the UserSeeder
@@ -151,7 +148,7 @@ class ContactTest extends TestCase
     public function testCreateUnauthenticated()
     {
 
-        // Running the UserSeeder'
+        // Running the UserSeeder
         $this->seed(UserSeeder::class);
         // Get Token
         $token = JWTAuth::attempt(['username' => 'test', 'password' => 'test']);
@@ -203,6 +200,30 @@ class ContactTest extends TestCase
             ]);
     }
 
+    /**
+     * Tests that retrieving a contact fails when the user is not authenticated.
+     *
+     * This test seeds the database with users and contacts, attempts to retrieve
+     * a contact without providing a JWT token, and checks that the response is
+     * 401 with the appropriate authentication error message.
+     */
+    public function testGetUnauthenticated()
+    {
+        // Running the UserSeeder and ContactSeeder
+        $this->seed([
+            UserSeeder::class,
+            ContactSeeder::class
+        ]);
+        $contact = Contact::query()->limit(1)->first();
+        // Get Contact
+        $response = $this->get('/api/contacts/' . $contact->id);
+        $response->assertStatus(401)
+            ->assertJson([
+                "errors" => [
+                    "message" => ['Unauthenticated.']
+                ]
+            ]);
+    }
 
     /**
      * Tests that retrieving a contact that doesn't exist fails.

@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Http\Exceptions\HttpResponseException;
 
 class AuthorUpdateRequest extends FormRequest
 {
@@ -11,7 +12,7 @@ class AuthorUpdateRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return $this->user() !== null;
     }
 
     /**
@@ -22,7 +23,25 @@ class AuthorUpdateRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'name' => ['required', 'string', 'max:100'],
+            'address' => ['nullable', 'string', 'max:255'],
+            'phone' => ['nullable', 'max:20'],
+            'email' => ['nullable', 'email', 'max:100'],
+            'website' => ['nullable', 'url'],
+            'bio' => ['nullable'],
+            'profile_image' => ['nullable'],
+            'social_media' => ['nullable', 'json'],
+            'nationality' => ['nullable'],
+            'birth_date' => ['nullable', 'date'],
+            'categories' => ['nullable', 'array'],
         ];
+    }
+
+
+    protected function failedValidation($validator)
+    {
+        throw new HttpResponseException(response([
+            'errors' => $validator->getMessageBag(),
+        ], 400));
     }
 }

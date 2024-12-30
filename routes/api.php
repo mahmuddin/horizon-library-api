@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Api\AddressController;
+use App\Http\Controllers\Api\AuthorController;
 use App\Http\Controllers\Api\ContactController;
 use App\Http\Controllers\Api\LoanManagementController;
 use App\Http\Controllers\Api\UserCategoryController;
@@ -59,7 +60,12 @@ Route::middleware('auth:api')->group(function () {
 
     Route::prefix('/authors')->group(function () {
         // Authors Management
-
+        Route::post('/', [AuthorController::class, 'create']);
+        Route::get('/', [AuthorController::class, 'list']);
+        Route::get('/search', [AuthorController::class, 'search']);
+        Route::get('/{id}', [AuthorController::class, 'get'])->where('id', '[0-9]+');
+        Route::put('/{id}', [AuthorController::class, 'update'])->where('id', '[0-9]+');
+        Route::delete('/{id}', [AuthorController::class, 'delete'])->where('id', '[0-9]+');
     });
 
     Route::prefix('/books')->group(function () {});

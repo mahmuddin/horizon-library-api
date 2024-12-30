@@ -29,4 +29,9 @@ class Author extends Model
         'birth_date',
         'categories'
     ];
+
+    protected $casts = [
+        'social_media' => 'json',
+        'categories' => 'array',
+    ];
 }
